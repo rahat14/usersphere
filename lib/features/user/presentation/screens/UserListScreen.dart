@@ -56,8 +56,11 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
       backgroundColor: const Color(0xFFF2F4F7),
       appBar: AppBar(title: Text('User List'), backgroundColor: Colors.white, elevation: 0, centerTitle: false),
       body: RefreshIndicator(
+        key: const Key('pull-to-refresh'),
         onRefresh: () async {
-          await ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+         if(!userState.isLoading){
+           await ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+         }
         },
         child:
             isConnected
@@ -79,6 +82,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                     ),
                     Expanded(
                       child: ListView.separated(
+                        key: const Key('user_list_view'),
                         controller: _scrollController,
                         itemCount: userState.users.length + (userState.hasMore ? 1 : 0),
                         separatorBuilder: (_, __) => const SizedBox(height: 8),
@@ -90,6 +94,8 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                             );
                           }
                           return Padding(
+
+                            key: Key('user_list_item_$index'),
                             padding: EdgeInsets.only(
                               left: 16.0,
                               right: 16.0,

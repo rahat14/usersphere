@@ -44,7 +44,7 @@ class UserNotifier extends StateNotifier<UserState> {
     }
   }
 
-  Future<void> localSearch(String query) async {
+ localSearch(String query) async {
     /// api limitation on search
     /// so doing a reactive local search
     // Normalize input
