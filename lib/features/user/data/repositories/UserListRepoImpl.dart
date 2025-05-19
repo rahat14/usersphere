@@ -1,6 +1,6 @@
 import 'package:usersphere/features/user/domain/repositories/UserListRepo.dart';
 
-import '../../../../datasources/user_api_service.dart';
+import '../datasources/user_api_service.dart';
 
 class UserRepositoryImpl implements UserListRepository {
   final UserApiService apiService;
