@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/connectivity_provider.dart';
 import '../providers/userListProvider.dart';
 import '../widgets/UserTile.dart';
 import '../widgets/no_internet_widget.dart';
+import '../widgets/searchWidget.dart';
 
 class UserListScreen extends ConsumerStatefulWidget {
   const UserListScreen({super.key});
@@ -36,8 +38,6 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(userProvider.notifier).loadUsers();
     });
-
-    // Future.microtask(() => );
   }
 
   @override
@@ -47,33 +47,30 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
 
     ref.listen<bool>(connectivityStatusProvider, (prev, next) {
       if (next == true) {
-        ref.read(userProvider.notifier).loadUsers(isRefresh: true );
+        ref.read(userProvider.notifier).loadUsers(isRefresh: true);
       }
     });
 
     return Scaffold(
       backgroundColor: const Color(0xFFF2F4F7),
-      appBar: AppBar(title: Text('User List'), backgroundColor: Colors.black, elevation: 0, centerTitle: true),
+      appBar: AppBar(title: Text('User List'), backgroundColor: Colors.white, elevation: 0, centerTitle: false),
       body:
           isConnected
               ? Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search users...',
-                        prefixIcon: const Icon(Icons.search),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
+                  SearchInputField(
+                    onChanged: (value) {
+                      if (value == '') {
+                        ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+                        SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
+                      } else {
+                        ref.read(userProvider.notifier).localSearch(value);
+                      }
+                    },
+                    onReset: () {
+                      ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+                      SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
+                    },
                   ),
                   Expanded(
                     child: ListView.separated(
@@ -106,5 +103,12 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                 },
               ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
   }
 }
