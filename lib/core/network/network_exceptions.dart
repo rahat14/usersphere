@@ -175,4 +175,11 @@ class CustomException implements Exception {
       message: 'Failed to parse network response to model or vice versa',
     );
   }
+  factory CustomException.statusCodeError(int statusCode) {
+    print('Failed Request with invalid Status Code $statusCode');
+    return CustomException(
+      exceptionType: _ExceptionType.serializationException,
+      message: 'Failed Request with invalid Status Code $statusCode',
+    );
+  }
 }

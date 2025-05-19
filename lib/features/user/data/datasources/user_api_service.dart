@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/network/api_exceptions.dart';
 import '../../../../core/network/network_exceptions.dart';
 
 class UserApiService {
@@ -12,10 +11,10 @@ class UserApiService {
     try {
       final response = await _dio.get('/users', queryParameters: {'per_page': 10, 'page': page});
 
-      if (response.statusCode == 200) {
+      if (response.statusCode.toString().startsWith("20")) {
         return response;
       } else {
-        throw ServerException(message:  'Failed to load users' , statusCode:  response.statusCode ?? 00);
+        throw CustomException.statusCodeError(response.statusCode ?? 00);
       }
     } on DioException catch (ex) {
       throw CustomException.fromDioException(ex);
