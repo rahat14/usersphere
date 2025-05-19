@@ -1,0 +1,2 @@
+# User-Sphere
+UserSphere is a modern Flutter application designed to showcase clean architecture, state management, and seamless API integration. It presents a user-centric experience by fetching and displaying user profiles with real-time search, smooth infinite scrolling, detailed profile views, and responsive design principles. Enhanced with error handling, offline support, and local caching, UserSphere ensures performance and usability across all device sizes.

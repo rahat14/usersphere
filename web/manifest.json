@@ -1,0 +1,35 @@
+{
+    "name": "usersphere",
+    "short_name": "usersphere",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "UserSphere is a modern Flutter application designed to showcase clean architecture, state management, and seamless API integration. It presents a user-centric experience by fetching and displaying user profiles with real-time search, smooth infinite scrolling, detailed profile views, and responsive design principles. Enhanced with error handling, offline support, and local caching, UserSphere ensures performance and usability across all device sizes.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
