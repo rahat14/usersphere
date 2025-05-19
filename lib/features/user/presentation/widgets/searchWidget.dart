@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class SearchInputField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onReset;

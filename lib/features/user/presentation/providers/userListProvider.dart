@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../services/di.dart';
 import '../../domain/repositories/UserListRepo.dart';
@@ -25,6 +27,20 @@ class UserNotifier extends StateNotifier<UserState> {
         tempSearchList: isRefresh ? newUsers : [...state.users, ...newUsers],
         isSearching: false,
       );
+
+      if((newUsersResp.total ?? 0)  <= state.users.length){
+        Fluttertoast.showToast(
+            msg: "You Are At The Last Page.",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.white,
+            textColor: Colors.black,
+            fontSize: 12.0
+        );
+      }
+
+
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
