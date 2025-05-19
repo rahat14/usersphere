@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../providers/connectivity_provider.dart';
 import '../providers/userListProvider.dart';
@@ -94,7 +95,12 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                               right: 16.0,
                               bottom: index == (userState.users.length - 1) ? 20 : 0,
                             ),
-                            child: userTile(userState.users[index]),
+                            child: InkWell(
+                              onTap: () {
+                                context.push('/user-details', extra: userState.users[index]);
+                              },
+                              child: userTile(userState.users[index]),
+                            ),
                           );
                         },
                       ),

@@ -28,19 +28,17 @@ class UserNotifier extends StateNotifier<UserState> {
         isSearching: false,
       );
 
-      if((newUsersResp.total ?? 0)  <= state.users.length){
+      if ((newUsersResp.total ?? 0) <= state.users.length) {
         Fluttertoast.showToast(
-            msg: "You Are At The Last Page.",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.white,
-            textColor: Colors.black,
-            fontSize: 12.0
+          msg: "You Are At The Last Page.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black45,
+          textColor: Colors.white,
+          fontSize: 12.0,
         );
       }
-
-
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
