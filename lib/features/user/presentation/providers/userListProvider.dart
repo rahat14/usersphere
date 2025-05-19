@@ -12,7 +12,7 @@ class UserNotifier extends StateNotifier<UserState> {
   Future<void> loadUsers({bool isRefresh = false}) async {
     if (state.isLoading || !state.hasMore && !isRefresh) return;
     try {
-      state = state.copyWith(isLoading: true, errorMessage: null);
+      state = state.copyWith(isLoading: true, errorMessage: null, users: isRefresh ? [] : state.users);
       final nextPage = isRefresh ? 1 : state.currentPage;
       final newUsersResp = await repository.getUsers(nextPage);
       final newUsers = newUsersResp.data ?? [];
@@ -39,15 +39,12 @@ class UserNotifier extends StateNotifier<UserState> {
 
     final filtered =
         state.tempSearchList?.where((user) {
-          final fullName = '${user.firstName} ${user.lastName}'
-              .toLowerCase()
-              .replaceAll(RegExp(r'\s+'), ' ');
+          final fullName = '${user.firstName} ${user.lastName}'.toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
 
           return fullName.contains(normalizedQuery);
-
         }).toList();
 
-    state = state.copyWith(isSearching: true, users: filtered , hasMore: false , isLoading: false );
+    state = state.copyWith(isSearching: true, users: filtered, hasMore: false, isLoading: false);
   }
 }
 

@@ -54,54 +54,59 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF2F4F7),
       appBar: AppBar(title: Text('User List'), backgroundColor: Colors.white, elevation: 0, centerTitle: false),
-      body:
-          isConnected
-              ? Column(
-                children: [
-                  SearchInputField(
-                    onChanged: (value) {
-                      if (value == '') {
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+        },
+        child:
+            isConnected
+                ? Column(
+                  children: [
+                    SearchInputField(
+                      onChanged: (value) {
+                        if (value == '') {
+                          ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+                          SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
+                        } else {
+                          ref.read(userProvider.notifier).localSearch(value);
+                        }
+                      },
+                      onReset: () {
                         ref.read(userProvider.notifier).loadUsers(isRefresh: true);
                         SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
-                      } else {
-                        ref.read(userProvider.notifier).localSearch(value);
-                      }
-                    },
-                    onReset: () {
-                      ref.read(userProvider.notifier).loadUsers(isRefresh: true);
-                      SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
-                    },
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      controller: _scrollController,
-                      itemCount: userState.users.length + (userState.hasMore ? 1 : 0),
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (context, index) {
-                        if (index == userState.users.length) {
-                          return const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            left: 16.0,
-                            right: 16.0,
-                            bottom: index == (userState.users.length - 1) ? 20 : 0,
-                          ),
-                          child: userTile(userState.users[index]),
-                        );
                       },
                     ),
-                  ),
-                ],
-              )
-              : NoInternetWidget(
-                onRetry: () {
-                  ref.read(userProvider.notifier).loadUsers();
-                },
-              ),
+                    Expanded(
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        itemCount: userState.users.length + (userState.hasMore ? 1 : 0),
+                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        itemBuilder: (context, index) {
+                          if (index == userState.users.length) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              left: 16.0,
+                              right: 16.0,
+                              bottom: index == (userState.users.length - 1) ? 20 : 0,
+                            ),
+                            child: userTile(userState.users[index]),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+                : NoInternetWidget(
+                  onRetry: () {
+                    ref.read(userProvider.notifier).loadUsers();
+                  },
+                ),
+      ),
     );
   }
 
