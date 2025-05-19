@@ -1,5 +1,7 @@
+import '../../data/models/UserListResp.dart';
+
 class UserState {
-  final List<dynamic> users;
+  final List<User> users;
   final bool isLoading;
   final String? errorMessage;
   final int currentPage;
@@ -14,7 +16,7 @@ class UserState {
   });
 
   UserState copyWith({
-    List<dynamic>? users,
+    List<User>? users,
     bool? isLoading,
     String? errorMessage,
     int? currentPage,

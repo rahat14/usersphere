@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 

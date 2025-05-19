@@ -1,3 +1,5 @@
+import 'package:usersphere/features/user/data/models/UserListResp.dart';
+
 abstract class UserListRepository {
-  Future<dynamic> getUsers(int page);
+  Future<UserListResp> getUsers(int page);
 }

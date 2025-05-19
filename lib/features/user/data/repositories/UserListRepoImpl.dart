@@ -1,6 +1,7 @@
 import 'package:usersphere/features/user/domain/repositories/UserListRepo.dart';
 
 import '../datasources/user_api_service.dart';
+import '../models/UserListResp.dart';
 
 class UserRepositoryImpl implements UserListRepository {
   final UserApiService apiService;
@@ -8,7 +9,8 @@ class UserRepositoryImpl implements UserListRepository {
   UserRepositoryImpl(this.apiService);
 
   @override
-  Future<dynamic> getUsers(int page) async {
-    return [];
+  Future<UserListResp> getUsers(int page) async {
+    return  apiService.fetchUsers(page) ;
+
   }
 }

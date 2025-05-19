@@ -1,18 +1,20 @@
 import 'package:dio/dio.dart';
 
 import '../../../../core/network/network_exceptions.dart';
+import '../models/UserListResp.dart';
 
 class UserApiService {
   final Dio _dio;
 
   UserApiService(this._dio);
 
-  Future<Response> fetchUsers(int page) async {
+  Future<UserListResp> fetchUsers(int page) async {
     try {
       final response = await _dio.get('/users', queryParameters: {'per_page': 10, 'page': page});
 
       if (response.statusCode.toString().startsWith("20")) {
-        return response;
+        var p = userListRespFromJson(response.toString());
+        return p;
       } else {
         throw CustomException.statusCodeError(response.statusCode ?? 00);
       }
