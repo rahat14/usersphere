@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:usersphere/core/app_colors.dart';
-import '../../../../core/text_styles.dart';
+import 'package:usersphere/core/theme/app_colors.dart';
+import '../../../../core/theme/text_styles.dart';
 
 class SearchInputField extends StatefulWidget {
   final ValueChanged<String> onChanged;

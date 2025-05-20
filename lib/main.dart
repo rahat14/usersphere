@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:usersphere/router/app_router.dart';
 
-import 'core/theme_data.dart';
+import 'core/theme/theme_data.dart';
 import 'services/di.dart' as di;
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/text_styles.dart';
+import '../../../../core/theme/text_styles.dart';
 import '../../data/models/UserListResp.dart';
 import '../widgets/cachedCircleAvatar.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/text_styles.dart';
+import '../../../../core/theme/text_styles.dart';
 import '../providers/connectivityProvider.dart';
 import '../providers/userListProvider.dart';
 import '../widgets/UserTile.dart';

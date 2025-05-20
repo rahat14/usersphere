@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:usersphere/core/app_colors.dart';
-import '../../../../core/text_styles.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/text_styles.dart';
 
 class NoInternetWidget extends StatelessWidget {
   final VoidCallback onRetry;
