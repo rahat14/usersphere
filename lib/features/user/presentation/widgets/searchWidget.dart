@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:usersphere/core/app_colors.dart';
+import '../../../../core/text_styles.dart';
 
 class SearchInputField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onReset;
 
-  const SearchInputField({super.key, required this.onChanged ,
-  required this.onReset});
+  const SearchInputField({
+    super.key,
+    required this.onChanged,
+    required this.onReset,
+  });
 
   @override
   State<SearchInputField> createState() => _SearchInputFieldState();
@@ -35,18 +40,25 @@ class _SearchInputFieldState extends State<SearchInputField> {
       child: TextField(
         controller: _controller,
         onChanged: widget.onChanged,
+        cursorColor: AppColors.textSubTitle,
         decoration: InputDecoration(
           hintText: 'Search users...',
+          hintStyle: CustomTextStyle.of(context).bodyMediumStyle(),
           prefixIcon: const Icon(Icons.search),
-          suffixIcon: _controller.text.isNotEmpty
-              ? IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              _controller.clear();
-              widget.onReset();
-            //  widget.onChanged('');
-            },
-          ) : null,
+          suffixIcon:
+              _controller.text.isNotEmpty
+                  ? IconButton(
+                    icon: const Icon(
+                      Icons.clear,
+                      color: AppColors.textSubTitle,
+                    ),
+                    onPressed: () {
+                      _controller.clear();
+                      widget.onReset();
+                      //  widget.onChanged('');
+                    },
+                  )
+                  : null,
           fillColor: Colors.white,
           filled: true,
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
@@ -59,4 +71,3 @@ class _SearchInputFieldState extends State<SearchInputField> {
     );
   }
 }
-
