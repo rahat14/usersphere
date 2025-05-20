@@ -96,7 +96,7 @@ flutter run
 ---
 
 ## 📲 Download APK
-[Download APK](apk/test_user_spare.apk)
+[Download APK](demo/test_user_spare.apk)
 
 ## 📸 Screenshots
 
