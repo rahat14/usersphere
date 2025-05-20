@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:usersphere/features/user/presentation/widgets/EmptyMessageWidget.dart';
+
 import '../../../../core/theme/text_styles.dart';
+import '../widgets/ErrorWidget.dart';
 import '../providers/connectivityProvider.dart';
 import '../providers/userListProvider.dart';
 import '../widgets/UserTile.dart';
@@ -28,8 +31,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
     _loadInitialList();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 300 &&
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 300 &&
           !ref.read(userProvider).isLoading) {
         ref.read(userProvider.notifier).loadUsers();
       }
@@ -49,7 +51,12 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
 
     ref.listen<bool>(connectivityStatusProvider, (prev, next) {
       if (next == true) {
-        ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+
+        Future.delayed(const Duration(milliseconds: 700), () {
+          // creating a delay so that mobile can reconnect to the internet before trying
+
+          ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+        });
       }
     });
 
@@ -64,9 +71,9 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
       body: RefreshIndicator(
         key: const Key('pull-to-refresh'),
         onRefresh: () async {
-         if(!userState.isLoading){
-           await ref.read(userProvider.notifier).loadUsers(isRefresh: true);
-         }
+          if (!userState.isLoading) {
+            await ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+          }
         },
         child:
             isConnected
@@ -75,64 +82,53 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                     SearchInputField(
                       onChanged: (value) {
                         if (value == '') {
-                          ref
-                              .read(userProvider.notifier)
-                              .loadUsers(isRefresh: true);
-                          SystemChannels.textInput.invokeMethod<void>(
-                            'TextInput.hide',
-                          );
+                          ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+                          SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
                         } else {
                           ref.read(userProvider.notifier).localSearch(value);
                         }
                       },
                       onReset: () {
-                        ref
-                            .read(userProvider.notifier)
-                            .loadUsers(isRefresh: true);
-                        SystemChannels.textInput.invokeMethod<void>(
-                          'TextInput.hide',
-                        );
+                        ref.read(userProvider.notifier).loadUsers(isRefresh: true);
+                        SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
                       },
                     ),
-                    Expanded(
-                      child: ListView.separated(
-                        key: const Key('user_list_view'),
-                        controller: _scrollController,
-                        itemCount:
-                            userState.users.length +
-                            (userState.hasMore ? 1 : 0),
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
-                        itemBuilder: (context, index) {
-                          if (index == userState.users.length) {
-                            return const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          }
-                          return Padding(
 
-                            key: Key('user_list_item_$index'),
-                            padding: EdgeInsets.only(
-                              left: 16.0,
-                              right: 16.0,
-                              bottom:
-                                  index == (userState.users.length - 1)
-                                      ? 20
-                                      : 0,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                context.push(
-                                  '/user-details',
-                                  extra: userState.users[index],
-                                );
-                              },
-                              child: userTile(context, userState.users[index]),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    userState.errorMessage != null
+                        ? ErrorMessageWidget(message: userState.errorMessage ?? 'Something went Wrong.')
+                        : Expanded(
+                          child:
+                              (userState.users.isEmpty  && !userState.isLoading)
+                                  ? EmptyMessageWidget()
+                                  : ListView.separated(
+                                    key: const Key('user_list_view'),
+                                    controller: _scrollController,
+                                    itemCount: userState.users.length + (userState.hasMore ? 1 : 0),
+                                    separatorBuilder: (_, __) => const SizedBox(height: 8),
+                                    itemBuilder: (context, index) {
+                                      if (index == userState.users.length) {
+                                        return const Padding(
+                                          padding: EdgeInsets.all(16),
+                                          child: Center(child: CircularProgressIndicator()),
+                                        );
+                                      }
+                                      return Padding(
+                                        key: Key('user_list_item_$index'),
+                                        padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                          bottom: index == (userState.users.length - 1) ? 20 : 0,
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            context.push('/user-details', extra: userState.users[index]);
+                                          },
+                                          child: userTile(context, userState.users[index]),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                        ),
                   ],
                 )
                 : NoInternetWidget(

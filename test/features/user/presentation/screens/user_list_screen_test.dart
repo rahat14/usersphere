@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,7 +45,7 @@ void main() {
       refreshCount = refreshCount + 1;
       calledPages.add(page); // Track pages called
 
-      return UserListResp(
+      return Right(UserListResp(
         data: List.generate(
           10,
               (i) =>
@@ -57,7 +58,7 @@ void main() {
                 avatar: 'https://example.com/avatar.png',
               ),
         ),
-      );
+      ));
     });
 
     sl.registerLazySingleton<UserListRepository>(() => mockRepo);

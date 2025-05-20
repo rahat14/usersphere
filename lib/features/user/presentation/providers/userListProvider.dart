@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:usersphere/features/user/data/models/UserListResp.dart';
 
 import '../../../../services/di.dart';
 import '../../domain/repositories/UserListRepo.dart';
@@ -16,35 +17,28 @@ class UserNotifier extends StateNotifier<UserState> {
     try {
       state = state.copyWith(isLoading: true, errorMessage: null, users: isRefresh ? [] : state.users);
       final nextPage = isRefresh ? 1 : state.currentPage;
-      final newUsersResp = await repository.getUsers(nextPage);
-      final newUsers = newUsersResp.data ?? [];
+      final result = await repository.getUsers(nextPage);
 
-      state = state.copyWith(
-        users: isRefresh ? newUsers : [...state.users, ...newUsers],
-        isLoading: false,
-        currentPage: nextPage + 1,
-        hasMore: (newUsersResp.totalPages ?? 1) > nextPage,
-        tempSearchList: isRefresh ? newUsers : [...state.users, ...newUsers],
-        isSearching: false,
+      result.fold(
+        (failure) {
+          Fluttertoast.showToast(
+            msg: failure.message,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white,
+          );
+          state.copyWith(isLoading: false, errorMessage: failure.message);
+        },
+        (response) {
+          updateListState(response, nextPage, isRefresh);
+        },
       );
-
-      if ((newUsersResp.total ?? 0) <= state.users.length) {
-        Fluttertoast.showToast(
-          msg: "You Are At The Last Page.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black45,
-          textColor: Colors.white,
-          fontSize: 12.0,
-        );
-      }
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
- localSearch(String query) async {
+  localSearch(String query) async {
     /// api limitation on search
     /// so doing a reactive local search
     // Normalize input
@@ -59,6 +53,31 @@ class UserNotifier extends StateNotifier<UserState> {
         }).toList();
 
     state = state.copyWith(isSearching: true, users: filtered, hasMore: false, isLoading: false);
+  }
+
+  void updateListState(UserListResp response, int nextPage, bool isRefresh) {
+    final newUsers = response.data ?? [];
+
+    state = state.copyWith(
+      users: isRefresh ? newUsers : [...state.users, ...newUsers],
+      isLoading: false,
+      currentPage: nextPage + 1,
+      hasMore: (response.totalPages ?? 1) > nextPage,
+      tempSearchList: isRefresh ? newUsers : [...state.users, ...newUsers],
+      isSearching: false,
+    );
+
+    if ((response.total ?? 0) <= state.users.length) {
+      Fluttertoast.showToast(
+        msg: "You Are At The Last Page.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black45,
+        textColor: Colors.white,
+        fontSize: 12.0,
+      );
+    }
   }
 }
 
