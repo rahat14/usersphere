@@ -16,7 +16,7 @@ UserSphere is a clean and modern Flutter app that displays a list of users fetch
 ✅ Fetch & display user list from `https://reqres.in/api/users`  
 ✅ Pagination using infinite scroll  
 ✅ Search functionality (local-only due to API limitation)  
-✅ Detail screen for each user  
+✅ Details screen for each user  
 ✅ Offline detection with retry support  
 ✅ Clean UI & responsive design  
 ✅ Pull-to-refresh  
@@ -84,13 +84,6 @@ flutter test
 
 - [Reqres API](https://reqres.in/api/users)
 
-Example endpoint:
-```
-https://reqres.in/api/users?page=1&per_page=10
-```
-
----
-
 ## 🛠 How to Run
 
 ```bash
@@ -102,15 +95,27 @@ flutter run
 
 ---
 
+## 📲 Download APK
+[Download APK](demo/test_user_spare.apk)
+
 ## 📸 Screenshots
 
-_Add screenshots here of list view, search, details screen, and offline UI._
+### 🧑‍💼 User List
+<img src="demo/list.png" alt="User List" width="300"/>
+
+### 📄 User Details
+
+<img src="demo/profile.png" alt="User List" width="300"/>
+
+### 🔍 User Search
+
+<img src="demo/search.png" alt="User List" width="300"/>
 
 ---
 
 ## 📝 Test Coverage
 
-
+<img src="demo/coverage_report.png" alt="Coverage Report" width="500"/>
 
 <!-- ## 🙌 Contributions
 
