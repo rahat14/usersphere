@@ -1,10 +1,10 @@
+import 'package:usersphere/features/user/data/datasources/userDataSource.dart';
 import 'package:usersphere/features/user/domain/repositories/UserListRepo.dart';
 
-import '../datasources/user_api_service.dart';
 import '../models/UserListResp.dart';
 
 class UserRepositoryImpl implements UserListRepository {
-  final UserApiService apiService;
+  final UserDataSource apiService;
 
   UserRepositoryImpl(this.apiService);
 

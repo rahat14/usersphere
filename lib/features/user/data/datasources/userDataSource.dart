@@ -3,10 +3,10 @@ import 'package:dio/dio.dart';
 import '../../../../core/network/network_exceptions.dart';
 import '../models/UserListResp.dart';
 
-class UserApiService {
+class UserDataSource {
   final Dio _dio;
 
-  UserApiService(this._dio);
+  UserDataSource(this._dio);
 
   Future<UserListResp> fetchUsers(int page) async {
     try {
