@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/network/network_exceptions.dart';
+import '../../../../core/network/networkExceptions.dart';
 import '../models/UserListResp.dart';
 
 class UserDataSource {

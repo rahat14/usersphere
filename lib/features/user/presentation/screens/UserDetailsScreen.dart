@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/text_styles.dart';
 import '../../data/models/UserListResp.dart';
-import '../widgets/cached_circle_avatar.dart';
+import '../widgets/cachedCircleAvatar.dart';
 
 class UserDetailsScreen extends StatefulWidget {
   final User user;

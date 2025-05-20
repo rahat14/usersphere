@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:usersphere/features/user/data/datasources/userDataSource.dart';
 
-import '../core/network/dio_client.dart';
+import '../core/network/dioClient.dart';
 import '../features/user/data/repositories/UserListRepoImpl.dart';
 import '../features/user/domain/repositories/UserListRepo.dart';
 
